@@ -24,7 +24,7 @@ const createAuth = (authObj) => new Promise((resolve, reject) => {
   axios.post(`${dbUrl}/authors.json`, authObj)
     .then((response) => {
       const body = { firebaseKey: response.data.name };
-      axios.get(`${dbUrl}/authors/${response.data.name}.json`, body)
+      axios.patch(`${dbUrl}/authors/${response.data.name}.json`, body)
         .then(() => {
           getAuthors().then(resolve);
         });

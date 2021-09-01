@@ -1,15 +1,16 @@
 import addBookForm from '../components/forms/addBookForm';
 import addAuthForm from '../components/forms/addAuthorForm';
 import {
-  createBook, deleteBook, getSingleBook, updateBook
+  createBook, deleteBook, getSingleBook, updateBook, deleteAuthorBooks
 } from '../helpers/data/bookData';
 import { showBooks } from '../components/books';
 import {
   createAuth, deleteAuth, getSingleAuth, updateAuth
 } from '../helpers/data/authorData';
 import { showAuthors } from '../components/authors';
-
-// <div id="view"></div>
+import viewBook from '../components/viewBooks';
+import viewAuths from '../components/viewAuths';
+import { viewBookDetails, viewAuthorDetails } from '../helpers/data/mergeddata';
 
 const domEvents = () => {
   document.querySelector('#main-container').addEventListener('click', (e) => {
@@ -71,6 +72,7 @@ const domEvents = () => {
       // eslint-disable-next-line no-alert
       if (window.confirm('Do you want to delete?')) {
         const [, id] = e.target.id.split('--');
+        deleteAuthorBooks(id);
         deleteAuth(id).then(showAuthors);
       }
     }
@@ -107,6 +109,17 @@ const domEvents = () => {
         firebaseKey
       };
       updateAuth(authObject).then(showAuthors);
+    }
+
+    if (e.target.id.includes('view-book-btn')) {
+      const [, firebaseKey] = e.target.id.split('--');
+      viewBookDetails(firebaseKey).then(viewBook);
+    }
+
+    if (e.target.id.includes('view-author-btn')) {
+      const [, firebaseKey] = e.target.id.split('--');
+      viewAuthorDetails(firebaseKey).then(viewAuths);
+      console.warn(viewAuthorDetails);
     }
   });
 };

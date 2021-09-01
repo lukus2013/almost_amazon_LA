@@ -1,6 +1,7 @@
 import axios from 'axios';
 import firebaseConfig from '../../../api/apiKeys';
 // API CALLS FOR BOOKS
+import { deleteAuth } from './authorData';
 
 const dbUrl = firebaseConfig.databaseURL;
 
@@ -51,5 +52,19 @@ const booksOnSale = () => new Promise((resolve, reject) => {
     .catch((error) => reject(error));
 });
 
+const getAuthorsBooks = (authorId) => new Promise((resolve, reject) => {
+  axios.get(`${dbUrl}/books.json?orderBy="author_id"&equalTo="${authorId}"`)
+    .then((response) => resolve(Object.values(response.data)))
+    .catch((error) => reject(error));
+});
+
+const deleteAuthorBooks = (authorId) => new Promise((resolve, reject) => {
+  getAuthorsBooks(authorId).then((authorBookArray) => {
+    const deleteBooks = authorBookArray.map((book) => deleteBooks(book.firebaseKey));
+
+    Promise.all([...deleteBooks]).then(() => resolve(deleteAuth(authorId)));
+  }).catch(reject);
+});
+
 // eslint-disable-next-line object-curly-newline
-export { getBooks, createBook, booksOnSale, deleteBook, getSingleBook, updateBook };
+export { getBooks, createBook, booksOnSale, deleteBook, getSingleBook, updateBook, getAuthorsBooks, deleteAuthorBooks };

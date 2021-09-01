@@ -1,8 +1,10 @@
+/* eslint-disable import/no-named-as-default-member */
+// eslint-disable-next-line import/no-named-as-default
+import domEvents from '../events/domEvents';
 import { showBooks } from '../components/books';
 import logoutButton from '../components/buttons/logoutButton';
 import domBuilder from '../components/domBuilder';
 import navBar from '../components/navBar';
-import domEvents from '../events/domEvents';
 import navigationEvents from '../events/navigationEvents';
 import { getBooks } from '../helpers/data/bookData';
 
